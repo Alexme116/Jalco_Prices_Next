@@ -1,14 +1,22 @@
 'use client'
 
-import { useState } from "react";
-import { toast } from "react-toastify";
-
+import { useState, useEffect } from "react";
+import { Id, toast } from "react-toastify";
+import { login, logout } from "@/controllers/firebaseController";
+import { getUserByEmail } from "@/controllers/userController";
+import { UserType } from "@/models/userModels";
 
 export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const afterToast = async (delay: number, toastVar: Id) => {
+      await new Promise(resolve => setTimeout(resolve, delay));
+      toast.dismiss(toastVar);
+      setLoading(false);
+    }
 
     const handle_login = async () => {
       if (loading) {
@@ -19,11 +27,56 @@ export default function Login() {
         position: "top-center",
       });
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      toast.dismiss(logging);
-      setLoading(false);
+      const user = await login(email, password);
+      if (user) {
+        handle_login_successful(logging, user);
+      } else {
+        handle_login_incorrect(logging);
+      }
     }
+
+    const handle_login_successful = async (toastVar: Id, user: import("firebase/auth").User) => {
+      const userData: UserType | null = await getUserByEmail(user.email!);
+      if (!userData) {
+        handle_login_incorrect(toastVar);
+      }
+
+      if (userData && userData.status == "disabled") {
+        toast.update(toastVar, {
+          render: "Cuenta deshabilitada",
+          type: "error",
+          isLoading: false,
+          autoClose: 1500,
+        });
+        await afterToast(1500, toastVar);
+        return;
+      }
+
+      toast.update(toastVar, {
+        render: "Sesión iniciada correctamente",
+        type: "success",
+        isLoading: false,
+        autoClose: 1500,
+      });
+      setEmail("");
+      setPassword("");
+      await afterToast(1500, toastVar);
+      window.location.href = "/dashboard";
+    }
+
+    const handle_login_incorrect = async (toastVar: Id) => {
+      toast.update(toastVar, {
+        render: "Error al iniciar sesión",
+        type: "error",
+        isLoading: false,
+        autoClose: 1500,
+      });
+      await afterToast(1500, toastVar);
+    }
+
+    useEffect(() => {
+      logout();
+    }, [])
 
     return (
         <div className="h-svh w-svw flex justify-center items-center">
