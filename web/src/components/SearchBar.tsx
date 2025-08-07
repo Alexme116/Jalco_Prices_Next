@@ -10,11 +10,11 @@ export default function SearchBar(
 ) {
     const [searchIsFocus, setSearchIsFocus] = useState(false);
 
+    const filteredSuggestions = products.filter(product => product.nombre.toLowerCase().startsWith(itemToSearch.toLowerCase()));
+    
     const handle_search_input_change = (name: string) => {
         setItemToSearch(name);
     }
-
-    const filteredSuggestions = products.filter(product => product.nombre.toLowerCase().startsWith(itemToSearch.toLowerCase()));
     
     return (
         <div className={`flex justify-center h-10 w-3/5 max-lg:w-[35rem] max-md:w-[33rem] max-sm:w-[21rem] self-center border-2 rounded-md ${searchIsFocus ? "border-[#edbd63]" : "border-[#eff3f6]"} transition-all duration-300`}>
@@ -25,7 +25,7 @@ export default function SearchBar(
                     autoComplete="off"
                     type="text"
                     placeholder="Buscar Producto"
-                    className="text-[16px] w-full h-full px-2 pb-[2px] outline-none rounded-l-md"
+                    className="text-[16px] w-full h-full px-2 pb-[2px] outline-none rounded-l-md bg-white"
                     value={itemToSearch}
                     onChange={(e) => { handle_search_input_change(e.target.value); setSearchIsFocus(true);}}
                     onKeyDown={(e) => {if (e.key === "Enter") { setSearchIsFocus(false) }}}
@@ -34,7 +34,7 @@ export default function SearchBar(
                 />
 
                 {/* Search Suggestions */}
-                {/* {(itemToSearch.length > 0 && searchIsFocus && filteredSuggestions.length > 0) && ( */}
+                {(itemToSearch.length > 0 && searchIsFocus && filteredSuggestions.length > 0) && (
                     <div className={`absolute top-8 -left-0.5 w-[100.4%] max-lg:w-[32.25rem] max-md:w-[30.3rem] max-sm:w-[18.44rem] m-0 rounded-b-md bg-white border-2 border-[#edbd63] ${itemToSearch.length > 0 && searchIsFocus ? "border-t-0" : "border-t-2"}`}>
                         <ul>
                             {filteredSuggestions
@@ -48,7 +48,7 @@ export default function SearchBar(
                             )}
                         </ul>
                     </div>
-                {/* )} */}
+                )}
             </div>
 
             {/* Search Button */}

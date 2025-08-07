@@ -5,6 +5,7 @@ import { getAllProductsCatalogController } from "@/controllers/productController
 import { ProductCatalogType } from "@/models/productModels";
 import { ProgressSpinner } from "@/icons/Icons";
 import SearchBar from "@/components/SearchBar";
+import ProductsGrid from "@/components/ProductsGrid";
 
 export default function Dashboard() {
     const [products, setProducts] = useState<ProductCatalogType[]>([]);
@@ -26,7 +27,7 @@ export default function Dashboard() {
     }, [])
 
     return (
-        <main className="flex-1 overflow-auto">
+        <main className="h-full w-full">
             <section className="p-5 flex flex-col gap-5">
                 {/* Title */}
                 <h1 className="text-2xl font-bold text-center max-md:text-xl">Productos</h1>
@@ -51,6 +52,12 @@ export default function Dashboard() {
                             products={products}
                             itemToSearch={itemToSearch}
                             setItemToSearch={setItemToSearch}
+                        />
+
+                        {/* Products Grid */}
+                        <ProductsGrid
+                            products={products}
+                            itemToSearch={itemToSearch}
                         />
                     </div>
                 }

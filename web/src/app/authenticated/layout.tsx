@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import "../globals.css";
@@ -53,7 +54,7 @@ export default function RootLayout({
     <section className="h-svh w-svw flex flex-col overflow-hidden">
       <NavBar user={user} isDevice={isDevice} />
       {user ?
-        <section>
+        <section className="flex-1">
           {children}
         </section>
         :

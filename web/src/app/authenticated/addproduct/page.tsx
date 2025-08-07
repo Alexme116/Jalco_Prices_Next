@@ -37,16 +37,15 @@ export default function AddProductPage() {
         });
 
         try {
-            const response = await addProductController(newProductData);
-            console.log("Response from addProductController:", response);
+            await addProductController(newProductData);
             toast.update(addingProduct, {
                 render: "Producto agregado exitosamente",
                 type: "success",
                 isLoading: false,
                 autoClose: 1500
             });
-            await new Promise(resolve => setTimeout(resolve, 1500));
             clearProductData();
+            await new Promise(resolve => setTimeout(resolve, 1500));
         } catch (error) {
             toast.update(addingProduct, {
                 render: error instanceof Error ? error.message : "Error al agregar el producto",
