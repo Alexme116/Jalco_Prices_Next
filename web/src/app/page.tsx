@@ -61,7 +61,7 @@ export default function Login() {
       setEmail("");
       setPassword("");
       await afterToast(1500, toastVar);
-      window.location.href = "/dashboard";
+      window.location.href = "/authenticated";
     }
 
     const handle_login_incorrect = async (toastVar: Id) => {

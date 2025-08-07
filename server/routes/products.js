@@ -17,6 +17,20 @@ router.get('/', async (req, res) => {
     }
 });
 
+// GET - Get all products for CATALOG
+router.get('/catalog', async (req, res) => {
+    try {
+        const products = await Product.find()
+            .select('_id nombre imagen');
+        res.json({
+            total: products.length,
+            products: products
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // GET - Get a product by ID
 router.get('/:id', async (req, res) => {
     try {
