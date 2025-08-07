@@ -8,62 +8,55 @@ const productSchema = new mongoose.Schema({
     },
     nombreGenerico: {
         type: String,
-        required: true,
+        default: "",
         trim: true
     },
     categoria: {
         type: String,
-        required: true,
+        default: "",
         trim: true
     },
     precioMayoreo: {
         type: Number,
-        required: true,
         default: 0
     },
     precioMenudeo: {
         type: Number,
-        required: true,
         default: 0
     },
     precioTienda: {
         type: Number,
-        required: true,
         default: 0
     },
     precioConIva: {
         type: Number,
-        required: true,
         default: 0
     },
     precioPolitica: {
         type: Number,
-        required: true,
         default: 0
     },
     porcentajeUtilidadReal: {
         type: Number,
-        required: true,
         default: 0
     },
     proveedor: {
         type: String,
-        required: true,
+        default: "",
         trim: true
     },
     minimoMayoreo: {
         type: Number,
-        required: true,
         default: 0
     },
     codigoDeBarras: {
         type: String,
-        required: true,
+        default: "",
         trim: true
     },
     imagen: {
         type: String,
-        required: true,
+        default: "",
         trim: true
     },
     vecesVisto: {

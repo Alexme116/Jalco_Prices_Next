@@ -21,3 +21,19 @@ export type ProductCatalogType = {
     nombre: string;
     imagen: string;
 }
+
+export type ProductAddType = {
+    nombre: string;
+    nombreGenerico: string;
+    categoria: string;
+    precioMayoreo: number;
+    precioMenudeo: number;
+    precioTienda: number;
+    precioConIva: number;
+    precioPolitica: number;
+    porcentajeUtilidadReal: number;
+    proveedor: string;
+    minimoMayoreo: number;
+    codigoDeBarras: string;
+    imagen: string;
+}

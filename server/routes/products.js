@@ -66,12 +66,12 @@ router.post('/', async (req, res) => {
         const {
             nombre, nombreGenerico, categoria, precioMayoreo, precioMenudeo,
             precioTienda, precioConIva, precioPolitica, porcentajeUtilidadReal,
-            proveedor, minimoMayoreo, codigoDeBarras, imagen, vecesVisto
+            proveedor, minimoMayoreo, codigoDeBarras, imagen
         } = req.body;
         
-        const existingProduct = await Product.findOne({ name });
+        const existingProduct = await Product.findOne({ nombre });
         if (existingProduct) {
-            return res.status(400).json({ error: 'Product already exists' });
+            return res.status(400).json({ error: 'Este producto ya existe' });
         }
         
         const newProduct = new Product({
@@ -87,13 +87,12 @@ router.post('/', async (req, res) => {
             proveedor,
             minimoMayoreo,
             codigoDeBarras,
-            imagen,
-            vecesVisto
+            imagen
         });
 
         const savedProduct = await newProduct.save();
         res.status(201).json({
-            message: 'Product created successfully',
+            message: 'Producto Creado Exitosamente',
             product: savedProduct
         });
     } catch (error) {
