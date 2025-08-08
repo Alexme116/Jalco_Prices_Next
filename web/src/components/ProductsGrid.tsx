@@ -36,7 +36,9 @@ export default function ProductsGrid(
                             "grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1"}
                         `}
                     >
-                        {filteredProducts.map((product) => (    
+                        {filteredProducts
+                        .sort((a, b) => a.nombre.localeCompare(b.nombre))
+                        .map((product) => (    
                             <button
                                 key={product._id}
                                 className="flex flex-col bg-white w-72 border border-[#0000001f] rounded-lg shadow-lg shadow-[#0000003b] max-md:w-60 hover:cursor-pointer"
