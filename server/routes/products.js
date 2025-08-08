@@ -47,6 +47,42 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// GET - Get a product by ID for ADMIN
+router.get('/admin/:id', async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id)
+            .select('nombre nombreGenerico categoria precioMayoreo precioMenudeo precioTienda precioConIva precioPolitica porcentajeUtilidadReal proveedor minimoMayoreo codigoDeBarras imagen');
+
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json({
+            message: 'Product found by ID',
+            product: product
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET - Get a product by ID for ADMIN
+router.get('/user/:id', async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id)
+            .select('nombre categoria precioMayoreo precioMenudeo minimoMayoreo codigoDeBarras imagen');
+
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json({
+            message: 'Product found by ID',
+            product: product
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Get - Check availability of a product by name
 router.get('/name/:name', async (req, res) => {
     try {

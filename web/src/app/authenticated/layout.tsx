@@ -4,6 +4,7 @@
 import "../globals.css";
 import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
+import { UserContext } from "@/context/UserContext";
 import { auth } from "@/configs/firebaseConfig";
 import { getUserByEmail } from "@/controllers/userController";
 import { UserType } from "@/models/userModels";
@@ -51,18 +52,20 @@ export default function RootLayout({
   }, [])
 
   return (
-    <section className="h-svh w-svw flex flex-col overflow-hidden">
-      <NavBar user={user} isDevice={isDevice} />
-      {user ?
-        <section className="flex-1">
-          {children}
-        </section>
-        :
-        <section className="flex-1 flex items-center justify-center">
-          <ProgressSpinner />
-        </section>
-      }
-      <ToastContainer />
-    </section>
+    <UserContext.Provider value={user}>
+      <section className="h-svh w-svw flex flex-col overflow-hidden">
+        <NavBar user={user} isDevice={isDevice} />
+        {user ?
+          <section className="flex-1">
+            {children}
+          </section>
+          :
+          <section className="flex-1 flex items-center justify-center">
+            <ProgressSpinner />
+          </section>
+        }
+        <ToastContainer />
+      </section>
+    </UserContext.Provider>
   );
 }

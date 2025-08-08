@@ -79,7 +79,7 @@ export default function Login() {
     }, [])
 
     return (
-        <div className="h-svh w-svw flex justify-center items-center">
+        <div className="h-svh w-svw flex justify-center items-center bg-white">
             {/* Form Container */}
             <div className="flex flex-col gap-8">
                 {/* Logo */}
