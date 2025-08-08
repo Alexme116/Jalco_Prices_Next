@@ -110,6 +110,7 @@ export default function AddProductPage() {
         }
     }
 
+    // Warning Price
     useEffect(() => {
         if (!isNaN(newProductData.precioPolitica) && !isNaN(newProductData.precioMayoreo)) {
             if (newProductData.precioMayoreo < newProductData.precioPolitica) {
@@ -120,6 +121,7 @@ export default function AddProductPage() {
         }
     }, [newProductData.precioPolitica, newProductData.precioMayoreo]);
 
+    // Change Porcentaje Utilidad Real
     useEffect(() => {
         if (newProductData.precioConIva > 0 && newProductData.precioMayoreo > 0) {
             setNewProductData({

@@ -136,6 +136,63 @@ router.post('/', async (req, res) => {
     }
 });
 
+// - Update a product by Id
+router.put('/:id', async (req, res) => {
+    try {
+        const { nombre } = req.body;
+        const productId = req.params.id;
+
+        const currentProduct = await Product.findById(productId);
+        if (!currentProduct) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+
+        // Si el nombre cambia, validar que no se repita (insensible a mayúsculas/minúsculas)
+        if (nombre && nombre.toLowerCase() !== currentProduct.nombre.toLowerCase()) {
+            const existingProduct = await Product.findOne({
+                nombre: { $regex: `^${nombre}$`, $options: 'i' }, // Comparación insensible
+                _id: { $ne: productId } // Excluir el actual
+            });
+
+            if (existingProduct) {
+                return res.status(400).json({ error: 'Ya existe otro producto con ese nombre' });
+            }
+        }
+
+        // Procede a actualizar
+        const updatedProduct = await Product.findByIdAndUpdate(productId, req.body, { new: true });
+
+        res.json({
+            message: 'Producto actualizado correctamente',
+            product: updatedProduct
+        });
+
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+
+// DELETE - Delete a product by ID
+router.delete('/:id', async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const deletedProduct = await Product.findByIdAndDelete(productId);
+
+        if (!deletedProduct) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+
+        res.json({
+            message: 'Producto eliminado correctamente',
+            product: deletedProduct
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // DELETE - Delete ALL products
 router.delete('/', async (req, res) => {
     try {
@@ -144,6 +201,6 @@ router.delete('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}); 
+});
 
 module.exports = router;

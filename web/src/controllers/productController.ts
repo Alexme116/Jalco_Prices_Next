@@ -97,3 +97,49 @@ export async function addProductController(productData: ProductAddType) {
         throw error;
     }
 }
+
+export async function updateProductByIdController(productId: string, productData: ProductAdminDetailsType | ProductUserDetailsType) {
+    try {
+        const response = await fetch(`${BACKEND_HOST}/api/product/${productId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${BACKEND_BEARER_TOKEN}`
+            },
+            body: JSON.stringify(productData)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Error al actualizar producto");
+        }
+
+        const { product } : { product: ProductAddType } = data;
+        return product;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function deleteProductByIdController(productId: string) {
+    try {
+        const response = await fetch(`${BACKEND_HOST}/api/product/${productId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${BACKEND_BEARER_TOKEN}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Error al eliminar producto");
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error al eliminar producto:", error);
+        throw error;
+    }
+}

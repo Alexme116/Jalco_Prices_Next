@@ -56,7 +56,7 @@ export default function RootLayout({
       <section className="h-svh w-svw flex flex-col overflow-hidden">
         <NavBar user={user} isDevice={isDevice} />
         {user ?
-          <section className="flex-1">
+          <section className="flex-1 overflow-auto">
             {children}
           </section>
           :
