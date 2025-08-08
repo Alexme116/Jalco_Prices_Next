@@ -11,7 +11,7 @@ export default function ProductsGrid(
     { products: ProductCatalogType[], itemToSearch: string }
 ) {
 
-    const filteredProducts = itemToSearch == "" ? products : products.filter(product => product.nombre.toLowerCase().startsWith(itemToSearch.toLowerCase()));
+    const filteredProducts = products.filter(product => product.nombre.trim().replace(" ","").toLowerCase().startsWith(itemToSearch.trim().replace(" ","").toLowerCase()));
 
     const handleGoToProductDetails = (productId: string) => {
         window.location.href = `/authenticated/productDetails/${productId}`;

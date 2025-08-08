@@ -10,7 +10,7 @@ export default function SearchBar(
 ) {
     const [searchIsFocus, setSearchIsFocus] = useState(false);
 
-    const filteredSuggestions = products.filter(product => product.nombre.toLowerCase().startsWith(itemToSearch.toLowerCase()));
+    const filteredSuggestions = products.filter(product => product.nombre.trim().replace(" ","").toLowerCase().startsWith(itemToSearch.trim().replace(" ","").toLowerCase()));
     
     const handle_search_input_change = (name: string) => {
         setItemToSearch(name);
