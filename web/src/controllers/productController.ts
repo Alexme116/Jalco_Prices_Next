@@ -21,7 +21,6 @@ export async function getAllProductsCatalogController(): Promise<ProductCatalogT
         const { products } : { products: ProductCatalogType[] } = await response.json();
         return products;
     } catch (error) {
-        console.error("Error fetching products:", error);
         throw error;
     }
 }
@@ -45,7 +44,6 @@ export async function getProductByIdForAdminController(productId: string): Promi
         const { product } : { product: ProductAdminDetailsType } = data;
         return product;
     } catch (error) {
-        console.error("Error fetching product:", error);
         throw error;
     }
 }
@@ -69,7 +67,6 @@ export async function getProductByIdForUserController(productId: string): Promis
         const { product } : { product: ProductUserDetailsType } = data;
         return product;
     } catch (error) {
-        console.error("Error fetching product:", error);
         throw error;
     }
 }
@@ -139,7 +136,6 @@ export async function deleteProductByIdController(productId: string) {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error("Error al eliminar producto:", error);
         throw error;
     }
 }

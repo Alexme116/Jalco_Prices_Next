@@ -14,14 +14,63 @@ export const getUserByEmail = async (email: string): Promise<UserType | null> =>
             }
         });
 
+        const data = await response.json()
+
         if (!response.ok) {
-            throw new Error(`Error fetching user: ${response.statusText}`);
+            throw new Error(data.error || "Error al obtener usuario");
         }
 
-        const { user } : { user: UserType } = await response.json();
+        const { user } : { user: UserType } = data;
         return user;
     } catch (error) {
-        console.error("Error fetching user by email:", error);
-        return null;
+        throw error;
+    }
+}
+
+export const createUserController = async (email: string, rol: string): Promise<UserType | null> => {
+    try {
+        const response = await fetch(`${BACKEND_HOST}/api/user`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${BACKEND_BEARER_TOKEN}`
+            },
+            body: JSON.stringify({ email, rol })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Error al crear usuario");
+        }
+
+        const { user } : { user: UserType } = data;
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const editUserRolByEmailController = async (email: string, rol: string) => {
+    try {
+        const response = await fetch(`${BACKEND_HOST}/api/user/email/rol/${email}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${BACKEND_BEARER_TOKEN}`
+            },
+            body: JSON.stringify({ rol })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Error al editar usuario");
+        }
+
+        const { user } : { user: UserType } = data;
+        return user;
+    } catch (error) {
+        throw error;
     }
 }

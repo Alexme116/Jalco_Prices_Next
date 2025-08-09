@@ -61,16 +61,6 @@ export default function Dashboard() {
                         />
                     </div>
                 }
-
-                {/* Search Bar */}
-                {/* <SearchBar itemToSearch={itemToSearch} setItemToSearch={setItemToSearch} handle_search_item={handle_search_item} products={products}
-                    handle_search_suggestion={handle_search_suggestion} filteredProducts={filteredProducts}
-                /> */}
-
-                {/* Products */}
-                {/* <ProductsGrid from={"admin"} products={products} setProducts={setProducts} itemFilter={itemFilter} filteredProducts={filteredProducts}
-                    setFilteredProducts={setFilteredProducts}
-                /> */}
             </section>
         </main>
     )

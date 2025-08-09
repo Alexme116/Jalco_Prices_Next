@@ -23,10 +23,10 @@ export default function NavBar(
     // Check current window path
     useEffect(() => {
         const path = window.location.pathname;
-        if (path.includes("/usermanager")) {
-            setActualWindow("/usermanager")
-        } else if (path.includes("/addproduct")) {
-            setActualWindow("/addproduct")
+        if (path.includes("/userManager")) {
+            setActualWindow("/userManager")
+        } else if (path.includes("/addProduct")) {
+            setActualWindow("/addProduct")
         } else if (path.includes("/chat")) {
             setActualWindow("/chat")
         } else if (path.includes("/report")) {
@@ -69,20 +69,20 @@ export default function NavBar(
                         {/* Add Product Icon */}
                         {isDevice != "Mobile" && user?.rol == "admin" &&
                             <button
-                                onClick={() => handleChangeView("/authenticated/addproduct")}
+                                onClick={() => handleChangeView("/authenticated/addProduct")}
                                 className="hover:cursor-pointer"
                             >
-                                <IconAdd color={actualWindow == "/addproduct" ? "#edbd63" : "#77797a"} w={"26px"} h={"26px"}/>
+                                <IconAdd color={actualWindow == "/addProduct" ? "#edbd63" : "#77797a"} w={"26px"} h={"26px"}/>
                             </button>
                         }
 
                         {/* User Manager Icon */}
                         {isDevice != "Mobile" && user?.rol == "admin" &&
                             <button
-                                onClick={() => handleChangeView("/authenticated/usermanager")}
+                                onClick={() => handleChangeView("/authenticated/userManager")}
                                 className="hover:cursor-pointer"
                             >
-                                <IconUser color={actualWindow == "/usermanager" ? "#edbd63" : "#77797a"} w={"26px"} h={"26px"}/>
+                                <IconUser color={actualWindow == "/userManager" ? "#edbd63" : "#77797a"} w={"26px"} h={"26px"}/>
                             </button>
                         }
 
@@ -143,9 +143,9 @@ export default function NavBar(
 
                         {/* Settings Add Product */}
                         {isDevice == "Mobile" && user?.rol == "admin" &&
-                            <button className="flex gap-2 items-center hover:cursor-pointer" onClick={() => handleChangeView("/authenticated/addproduct")}>
+                            <button className="flex gap-2 items-center hover:cursor-pointer" onClick={() => handleChangeView("/authenticated/addProduct")}>
                                 <div>
-                                    <IconAdd color={actualWindow == "/addproduct" ? "#edbd63" : "#77797a"} w={"20px"} h={"20px"}/>
+                                    <IconAdd color={actualWindow == "/addProduct" ? "#edbd63" : "#77797a"} w={"20px"} h={"20px"}/>
                                 </div>
                                 <h1 className="text-sm pt-[0.5px]">Agregar</h1>
                             </button>
@@ -153,9 +153,9 @@ export default function NavBar(
 
                         {/* Settings User Manager */}
                         {isDevice == "Mobile" && user?.rol == "admin" &&
-                            <button className="flex gap-2 items-center hover:cursor-pointer" onClick={() => handleChangeView("/authenticated/usermanager")}>
+                            <button className="flex gap-2 items-center hover:cursor-pointer" onClick={() => handleChangeView("/authenticated/userManager")}>
                                 <div>
-                                    <IconUser color={actualWindow == "/usermanager" ? "#edbd63" : "#77797a"} w={"20px"} h={"20px"}/>
+                                    <IconUser color={actualWindow == "/userManager" ? "#edbd63" : "#77797a"} w={"20px"} h={"20px"}/>
                                 </div>
                                 <h1 className="text-sm pt-[0.5px]">Usuarios</h1>
                             </button>
