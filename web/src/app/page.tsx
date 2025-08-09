@@ -89,13 +89,21 @@ export default function Login() {
 
                 {/* Form */}
                 <div className="flex flex-col w-72 gap-4 max-sm:w-60">
-                    <input type="email" placeholder="Correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)}
-                        onKeyDown={(e) => {if (e.key === "Enter") { handle_login() }}}
-                        className="text-[16px] rounded-md border-2 px-2 py-1"
+                    <input
+                      type="email"
+                      placeholder="Correo electrónico"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      onKeyDown={(e) => {if (e.key === "Enter") { handle_login() }}}
+                      className="text-[16px] rounded-md border-2 px-2 py-1"
                     />
-                    <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)}
-                        onKeyDown={(e) => {if (e.key === "Enter") { handle_login() }}}
-                        className="text-[16px] rounded-md border-2 px-2 py-1"
+                    <input
+                      type="password"
+                      placeholder="Contraseña"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onKeyDown={(e) => {if (e.key === "Enter") { handle_login() }}}
+                      className="text-[16px] rounded-md border-2 px-2 py-1"
                     />
                 </div>
 

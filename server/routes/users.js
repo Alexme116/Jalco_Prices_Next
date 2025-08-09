@@ -91,4 +91,21 @@ router.put('/email/rol/:email', async (req, res) => {
     }
 });
 
+// PUT - Update user status By email
+router.put('/email/status/:email', async (req, res) => {
+    try {
+        const { status } = req.body;
+        const user = await User.findOneAndUpdate({ email: req.params.email }, { status }, { new: true });
+        if (!user) {
+            return res.status(404).json({ error: 'No se encontro el usuario' });
+        }
+        res.json({
+            message: 'Estado de usuario actualizado correctamente',
+            user: user
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;

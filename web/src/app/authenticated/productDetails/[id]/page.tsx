@@ -321,12 +321,15 @@ export default function ProductDetails(
                                         }
 
                                         {/* Minimo Mayoreo */}
-                                        {user?.rol == "admin" ?
+                                        {user?.rol == "admin" &&
                                             <CellInput label={"Minimo Mayoreo"} value={productData.minimoMayoreo} setValue={(value) => setProductData({...productData, minimoMayoreo: parseFloat(value)})} handleEnter={handleUpdateProduct} isNumber={true} />
-                                            :
-                                            <CellDisplay label={"Minimo Mayoreo"} value={productData.minimoMayoreo} />
                                         }
                                     </div>
+
+                                    {/* Minimo Mayoreo */}
+                                    {user?.rol == "user" &&
+                                        <CellDisplay label={"Minimo Mayoreo"} value={productData.minimoMayoreo} />
+                                    }
 
                                     {/* Codigo De Barras */}
                                     {user?.rol == "admin" &&

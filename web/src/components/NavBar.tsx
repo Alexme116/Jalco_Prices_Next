@@ -55,7 +55,7 @@ export default function NavBar(
                         <Image src={JalcoLogo} alt="Jalco" className="h-14 w-auto max-md:h-10 rounded-lg"/>
                     </button>
 
-                    <div className={`flex items-center gap-10 transition-all duration-500 overflow-hidden ${user == null ? "w-0" : user.rol == "admin" ? "w-[290px]" : "w-[88px]"}`}>
+                    <div className={`flex items-center gap-10 transition-all duration-500 overflow-hidden ${user == null ? "w-0" : user.rol == "admin" ? "w-[290px]" : "w-[92px]"}`}>
                         {/* Dashboard Icon */}
                         {isDevice != "Mobile" &&
                             <button
