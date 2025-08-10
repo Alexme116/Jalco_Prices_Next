@@ -12,9 +12,8 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const afterToast = async (delay: number, toastVar: Id) => {
+    const afterToast = async (delay: number) => {
       await new Promise(resolve => setTimeout(resolve, delay));
-      toast.dismiss(toastVar);
       setLoading(false);
     }
 
@@ -48,7 +47,7 @@ export default function Login() {
           isLoading: false,
           autoClose: 1500,
         });
-        await afterToast(1500, toastVar);
+        await afterToast(1500);
         return;
       }
 
@@ -60,7 +59,7 @@ export default function Login() {
       });
       setEmail("");
       setPassword("");
-      await afterToast(1500, toastVar);
+      await afterToast(1500);
       window.location.href = "/authenticated";
     }
 
@@ -71,7 +70,7 @@ export default function Login() {
         isLoading: false,
         autoClose: 1500,
       });
-      await afterToast(1500, toastVar);
+      await afterToast(1500);
     }
 
     useEffect(() => {

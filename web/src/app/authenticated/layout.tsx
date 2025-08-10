@@ -1,5 +1,4 @@
 import "../globals.css";
-import { ToastContainer } from "react-toastify";
 import { UserProvider } from "@/context/UserContext";
 import NavBar from "@/components/NavBar";
 
@@ -13,7 +12,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {children}
           </div>
         </section>
-        <ToastContainer />
       </section>
     </UserProvider>
   );

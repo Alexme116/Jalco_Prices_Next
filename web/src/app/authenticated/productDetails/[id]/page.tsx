@@ -18,7 +18,7 @@ export default function ProductDetails(
     paramsPromise: { params: Promise<{ id: string }> }
 ) {
     const { id } = use(paramsPromise.params);
-    const user = useUser();
+    const { user } = useUser();
     const [loadingProduct, setLoadingProduct] = useState(true)
     const [productData, setProductData] = useState<ProductAdminDetailsType | ProductUserDetailsType | null>(null)
     const [showBarCode, setShowBarCode] = useState(false)
