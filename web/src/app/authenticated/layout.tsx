@@ -1,71 +1,20 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-'use client';
-
 import "../globals.css";
-import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
-import { UserContext } from "@/context/UserContext";
-import { auth } from "@/configs/firebaseConfig";
-import { getUserByEmail } from "@/controllers/userController";
-import { UserType } from "@/models/userModels";
-import { ProgressSpinner } from "@/icons/Icons";
+import { UserProvider } from "@/context/UserContext";
 import NavBar from "@/components/NavBar";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const [user, setUser] = useState<UserType | null>(null);
-  const [isDevice, setIsDevice] = useState('Mobile');
-
-  // Check user authentication
-  useEffect(() => {
-    auth.onAuthStateChanged(async user => {
-      if (!user) {
-        window.location.href = "/";
-      }
-
-      if (user && user.email) {
-        const userData = await getUserByEmail(user.email);
-        if (userData) {
-          setUser(userData);
-        }
-      }
-    });
-  }, [auth]);
-
-  // Check device type
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 1024) {
-        setIsDevice('Pc');
-      } else if (window.innerWidth > 600 && window.innerWidth <= 1024) {
-        setIsDevice('Tablet');
-      } else {
-        setIsDevice('Mobile');
-      }
-    }
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-  }, [])
-
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <UserContext.Provider value={user}>
+    <UserProvider>
       <section className="h-svh w-svw flex flex-col overflow-hidden">
-        <NavBar user={user} isDevice={isDevice} />
-        {user ?
-          <section className="flex-1 overflow-auto">
+        <NavBar />
+        <section className="flex-1 overflow-auto">
+          <div className="h-full w-full">
             {children}
-          </section>
-          :
-          <section className="flex-1 flex items-center justify-center">
-            <ProgressSpinner />
-          </section>
-        }
+          </div>
+        </section>
         <ToastContainer />
       </section>
-    </UserContext.Provider>
+    </UserProvider>
   );
 }

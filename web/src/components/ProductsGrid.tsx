@@ -2,6 +2,7 @@
 'use client'
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ProductCatalogType } from "@/models/productModels";
 import ImageNotFound from "@/assets/Images/ImageNotFound.png"
 
@@ -10,11 +11,12 @@ export default function ProductsGrid(
     { products, itemToSearch } :
     { products: ProductCatalogType[], itemToSearch: string }
 ) {
+    const router = useRouter();
 
     const filteredProducts = products.filter(product => product.nombre.trim().replace(" ","").toLowerCase().startsWith(itemToSearch.trim().replace(" ","").toLowerCase()));
 
     const handleGoToProductDetails = (productId: string) => {
-        window.location.href = `/authenticated/productDetails/${productId}`;
+        router.push(`/authenticated/productDetails/${productId}`);
     }
     
     return (

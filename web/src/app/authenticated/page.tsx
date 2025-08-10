@@ -27,41 +27,39 @@ export default function Dashboard() {
     }, [])
 
     return (
-        <main className="h-full w-full">
-            <section className="p-5 flex flex-col gap-5">
-                {/* Title */}
-                <h1 className="text-2xl font-bold text-center max-md:text-xl">Productos</h1>
+        <section className="p-5 flex flex-col gap-5">
+            {/* Title */}
+            <h1 className="text-2xl font-bold text-center max-md:text-xl">Productos</h1>
 
-                {/* Loading Spinner */}
-                {loadingProducts &&
-                    <div className="flex justify-center">
-                        <ProgressSpinner />
-                    </div>
-                }
+            {/* Loading Spinner */}
+            {loadingProducts &&
+                <div className="flex justify-center">
+                    <ProgressSpinner />
+                </div>
+            }
 
-                {products.length == 0 && !loadingProducts &&
-                    <div className="flex justify-center">
-                        <p className="text-gray-500">No hay productos disponibles.</p>
-                    </div>
-                }
+            {products.length == 0 && !loadingProducts &&
+                <div className="flex justify-center">
+                    <p className="text-gray-500">No hay productos disponibles.</p>
+                </div>
+            }
 
-                {products.length > 0 && !loadingProducts &&
-                    <div className="flex flex-col gap-5">
-                        {/* Search Bar */}
-                        <SearchBar
-                            products={products}
-                            itemToSearch={itemToSearch}
-                            setItemToSearch={setItemToSearch}
-                        />
+            {products.length > 0 && !loadingProducts &&
+                <div className="flex flex-col gap-5">
+                    {/* Search Bar */}
+                    <SearchBar
+                        products={products}
+                        itemToSearch={itemToSearch}
+                        setItemToSearch={setItemToSearch}
+                    />
 
-                        {/* Products Grid */}
-                        <ProductsGrid
-                            products={products}
-                            itemToSearch={itemToSearch}
-                        />
-                    </div>
-                }
-            </section>
-        </main>
+                    {/* Products Grid */}
+                    <ProductsGrid
+                        products={products}
+                        itemToSearch={itemToSearch}
+                    />
+                </div>
+            }
+        </section>
     )
 }

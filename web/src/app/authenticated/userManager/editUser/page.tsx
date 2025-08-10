@@ -80,14 +80,14 @@ export default function AdminEditUser() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 onKeyDown={(e) => {if (e.key === "Enter") { handleChangeUserDetails() }}}
-                                className="text-[16px] rounded-md border-2 px-2 pb-[2px]"
+                                className="text-[16px] rounded-md border-2 px-2 pb-[2px] bg-white"
                             />
                         </div>
 
                         {/* Select Rol */}
                         <div className="flex flex-col">
                             <h1 className="text-xs font-bold">Rol</h1>
-                            <select className={`rounded-md border-2 px-2 py-[3px] max-sm:text-sm border-black hover:cursor-pointer ${rol == "default" ? "text-gray-400" : "text-black"}`}
+                            <select className={`rounded-md border-2 px-2 py-[3px] max-sm:text-sm border-black bg-white hover:cursor-pointer ${rol == "default" ? "text-gray-400" : "text-black"}`}
                                 value={rol} onChange={(e) => setRol(e.target.value)}
                             >
                                 <option value="default" disabled className="text-gray-400">Selecciona un rol</option>
