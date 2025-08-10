@@ -3,6 +3,7 @@
 'use client'
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify"
 import { useUser } from "@/context/UserContext";
@@ -14,7 +15,8 @@ import CellInput from "@/components/CellInput";
 import CellDisplay from "@/components/CellDisplay";
 
 export default function AddProductPage() {
-    const { user, loading } = useUser();
+    const { user } = useUser();
+    const [loadingUser, setLoadingUser] = useState(true);
     const [warningPrice, setWarningPrice] = useState(false);
     const [newProductData, setNewProductData] = useState<ProductAddType>(
         {
@@ -33,6 +35,8 @@ export default function AddProductPage() {
             imagen: ""
         }
     );
+
+    const router = useRouter();
 
     const handleAddProduct = async () => {
         const addingProduct = toast.loading("Agregando producto...", {
@@ -138,14 +142,16 @@ export default function AddProductPage() {
     useEffect(() => {
         if (user) {
             if (user.rol != "admin") {
-                window.location.href = "/authenticated";
+                router.replace("/authenticated");
+            } else {
+                setLoadingUser(false);
             }
         }
     }, [user]);
 
     return (
         <section className="p-5">
-            {loading ?
+            {loadingUser ?
                 <div className="flex justify-center">
                     <ProgressSpinner />
                 </div>

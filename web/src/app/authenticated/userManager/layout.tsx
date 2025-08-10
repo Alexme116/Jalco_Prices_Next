@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import "../../globals.css";
@@ -12,15 +13,16 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const { user, loading } = useUser();
+    const { user } = useUser();
     const [windowChanged, setWindowChanged] = useState(false)
     const [actualWindow, setActualWindow] = useState<string>("")
+    const [loadingUser, setLoadingUser] = useState(true)
 
     const router = useRouter();
     const pathname = usePathname();
 
     const handleChangeView = (path: string) => {
-        router.push(path);
+        router.replace(path);
         setWindowChanged(!windowChanged)
     }
 
@@ -33,7 +35,9 @@ export default function RootLayout({
     useEffect(() => {
         if (user) {
             if (user.rol != "admin") {
-                window.location.href = "/authenticated";
+                router.replace("/authenticated");
+            } else {
+                setLoadingUser(false);
             }
         }
     }, [user]);
@@ -42,7 +46,7 @@ export default function RootLayout({
         <section className="p-5 flex flex-col gap-10">
             <UserManagerNav actualWindow={actualWindow} handleChangeView={handleChangeView} />
 
-            {loading ? (
+            {loadingUser || !user ? (
                 <div className="flex justify-center">
                     <ProgressSpinner />
                 </div>

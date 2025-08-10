@@ -2,6 +2,7 @@
 'use client';
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState, useEffect, use } from "react"
 import { toast } from "react-toastify";
 import { useUser } from "@/context/UserContext";
@@ -26,6 +27,8 @@ export default function ProductDetails(
     const [showDeleteAlert, setShowDeleteAlert] = useState(false)
     const [canUpdate, setCanUpdate] = useState(true)
     const [canDelete, setCanDelete] = useState(true)
+
+    const router = useRouter();
 
     const handleUpdateProduct = async () => {
         if (!canUpdate || !productData) {
@@ -375,7 +378,7 @@ export default function ProductDetails(
                         <div className="absolute left-5">
                             <button
                                 className="flex justify-center items-center pt-1 pl-1 pr-[5px] pb-[5px] rounded-full bg-black hover:cursor-pointer"
-                                onClick={() => window.location.href = `/authenticated`}
+                                onClick={() => router.back()}
                             >
                                 <ArrowReturnIcon color="#FFF" h="20px" w="20px" />
                             </button>

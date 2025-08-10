@@ -24,7 +24,11 @@ export default function NavBar() {
     const [actualWindow, setActualWindow] = useState<string>("");
 
     const handleChangeView = (path: string) => {
-        router.push(path);
+        if (path == "/authenticated") {
+            router.replace(path);
+        } else {
+            router.push(path);
+        }
         setShowSettings(false);
     };
 
