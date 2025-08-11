@@ -33,9 +33,10 @@ router.get('/:id', async (req, res) => {
 // POST - Create a new chat
 router.post('/', async (req, res) => {
     try {
-        const { title } = req.body;
+        const { ind, title } = req.body;
 
         const newChat = new Chat({
+            ind,
             title
         });
 
