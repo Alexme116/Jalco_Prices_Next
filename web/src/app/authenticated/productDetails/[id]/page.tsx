@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
@@ -7,11 +8,12 @@ import { useState, useEffect, use } from "react"
 import { toast } from "react-toastify";
 import { useUser } from "@/context/UserContext";
 import { getProductByIdForAdminController, getProductByIdForUserController, updateProductByIdController, deleteProductByIdController } from "@/controllers/productController";
-import { ProductAdminDetailsType, ProductUserDetailsType } from "@/models/productModels"
+import { ProductAdminDetailsType, ProductUserDetailsType, ProductAccessoryDetailsType } from "@/models/productModels"
 import { ArrowReturnIcon, ProgressSpinner, TrashIcon } from "@/icons/Icons"
 import ImageNotFound from "@/assets/Images/ImageNotFound.png";
 import CellInput from "@/components/CellInput"
 import CellDisplay from "@/components/CellDisplay"
+import SameProducts from "@/components/SameProducts";
 import BarCode from "@/components/BarCode";
 import VerificationAlert from "@/components/VerificationAlert";
 
@@ -22,6 +24,8 @@ export default function ProductDetails(
     const { user } = useUser();
     const [loadingProduct, setLoadingProduct] = useState(true)
     const [productData, setProductData] = useState<ProductAdminDetailsType | ProductUserDetailsType | null>(null)
+    const [productDataCopy, setProductDataCopy] = useState<ProductAdminDetailsType | ProductUserDetailsType | null>(null)
+    const [accessory, setAccessory] = useState<ProductAccessoryDetailsType | null>(null)
     const [showBarCode, setShowBarCode] = useState(false)
     const [warningPrice, setWarningPrice] = useState(false)
     const [showDeleteAlert, setShowDeleteAlert] = useState(false)
@@ -163,6 +167,17 @@ export default function ProductDetails(
         }
     };
 
+    // Add accessory prices to the product details
+    useEffect(() => {
+        if (accessory && productDataCopy) {
+            handleChangeMayoreo(String(productDataCopy?.precioMayoreo + accessory.precioMayoreo))
+        } else {
+            if (productDataCopy) {
+                handleChangeMayoreo(String(productDataCopy.precioMayoreo))
+            }
+        }
+    }, [accessory, productDataCopy])
+
     // Fetch Product
     useEffect(() => {
         const fetchProduct = async () => {
@@ -172,12 +187,14 @@ export default function ProductDetails(
                     getProductByIdForAdminController(id)
                         .then(product => {
                             setProductData(product as ProductAdminDetailsType);
+                            setProductDataCopy(product as ProductAdminDetailsType);
                             setLoadingProduct(false);
                         });
                 } else {
                     getProductByIdForUserController(id)
                         .then(product => {
                             setProductData(product as ProductUserDetailsType);
+                            setProductDataCopy(product as ProductUserDetailsType);
                             setLoadingProduct(false);
                         });
                 }
@@ -360,7 +377,7 @@ export default function ProductDetails(
                         </div>
 
                         {/* Same Generic Names Products */}
-                        {/* <SameProducts from={"admin"} nombreGenerico={nombreGenerico} id={id} filterName={filterName} accessory={accessory} setAccessory={setAccessory} /> */}
+                        <SameProducts nombreGenerico={productData.nombreGenerico} id={id} accessory={accessory} setAccessory={setAccessory} />
 
                         {/* Delete Button */}
                         {user?.rol == "admin" &&

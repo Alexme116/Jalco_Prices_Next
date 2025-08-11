@@ -69,7 +69,7 @@ router.get('/admin/:id', async (req, res) => {
 router.get('/user/:id', async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
-            .select('nombre categoria precioMayoreo precioMenudeo minimoMayoreo codigoDeBarras imagen');
+            .select('nombre nombreGenerico categoria precioMayoreo precioMenudeo minimoMayoreo codigoDeBarras imagen');
 
         if (!product) {
             return res.status(404).json({ error: 'Product not found' });
@@ -83,7 +83,22 @@ router.get('/user/:id', async (req, res) => {
     }
 });
 
-// Get - Check availability of a product by name
+// GET - Get all products by generic name
+router.get('/generic/:name', async (req, res) => {
+    try {
+        const products = await Product.find({ nombreGenerico: req.params.name })
+            .select('_id nombre precioMayoreo imagen');
+        
+        res.json({
+            total: products.length,
+            products: products
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET - Check availability of a product by name
 router.get('/name/:name', async (req, res) => {
     try {
         const product = await Product.findOne({ name: req.params.name });
