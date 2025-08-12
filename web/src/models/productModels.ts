@@ -71,3 +71,10 @@ export type ProductAccessoryDetailsType = {
     precioMayoreo: number;
     imagen: string;
 }
+
+export type ProductReportType = {
+    _id: string;
+    nombre: string;
+    imagen: string;
+    vecesVisto: number;
+}

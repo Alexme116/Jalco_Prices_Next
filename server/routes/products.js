@@ -98,6 +98,19 @@ router.get('/generic/:name', async (req, res) => {
     }
 });
 
+// GET - Get all products for report
+router.get('/report/report', async (req, res) => {
+    try {
+        const products = await Product.find();
+        res.json({
+            total: products.length,
+            products: products
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // GET - Check availability of a product by name
 router.get('/name/:name', async (req, res) => {
     try {

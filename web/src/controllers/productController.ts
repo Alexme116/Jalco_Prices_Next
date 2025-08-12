@@ -1,6 +1,6 @@
 'use server'
 
-import { ProductCatalogType, ProductAddType, ProductAdminDetailsType, ProductUserDetailsType, ProductAccessoryDetailsType } from "@/models/productModels";
+import { ProductCatalogType, ProductAddType, ProductAdminDetailsType, ProductUserDetailsType, ProductAccessoryDetailsType, ProductReportType } from "@/models/productModels";
 
 const { BACKEND_HOST, BACKEND_BEARER_TOKEN } = process.env;
 
@@ -88,6 +88,29 @@ export async function getProductsByGenericNameController(genericName: string): P
         }
 
         const { products } : { products: ProductAccessoryDetailsType[] } = data;
+        return products;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getAllProductsReportController(): Promise<ProductReportType[]> {
+    try {
+        const response = await fetch(`${BACKEND_HOST}/api/product/report/report`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${BACKEND_BEARER_TOKEN}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Error al obtener productos");
+        }
+
+        const { products } : { products: ProductReportType[] } = data;
         return products;
     } catch (error) {
         throw error;
