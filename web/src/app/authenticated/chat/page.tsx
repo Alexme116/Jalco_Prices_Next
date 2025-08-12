@@ -8,7 +8,7 @@ import { MessageType, ChatType } from "@/models/chatModels";
 import { ProgressSpinner, CaretRightIcon, DotsIcon, EditIcon, TrashIcon } from "@/icons/Icons";
 import ChatList from "@/components/ChatList";
 import ChatDashboard from "@/components/ChatDashboard";
-// import ChatEdit from "./ChatEdit/ChatEdit";
+import ChatEdit from "@/components/ChatEdit";
 import CreateChat from "@/components/CreateChat";
 
 export default function ChatPage() {
@@ -32,147 +32,155 @@ export default function ChatPage() {
     }
 
     const handleSendText = async (text: string) => {
-        const newMessage = {
+        if (!user) {
+            return;
+        }
+
+        const newMessage: MessageType = {
             ind: messages.length + 1,
             text: text,
             email: user?.email,
             rol: user?.rol
         };
+
         try {
-            // sendText(newMessage);
+            sendText(newMessage);
             // await add_message_to_chat(chatSelected._id, newMessage);
         } catch {
             toast.error("Error al enviar el mensaje", {
                 position: "top-center",
                 autoClose: 1950
             });
-            // deleteLastMessage(newMessage._id);
+            deleteLastMessage(newMessage.ind);
         }
     }
 
-    // const deleteLastMessage = (id) => {
-    //     const newMessageList = messages.filter((m) => m._id != id);
-    //     const newChat = {
-    //         ...chatSelected,
-    //         messages: newMessageList
-    //     };
-    //     const updatedChats = chats.map((c) => {
-    //         if (c._id == chatSelected._id) {
-    //             return newChat;
-    //         }
-    //         return c;
-    //     });
-    //     setChats(updatedChats);
-    //     setChatSelected(newChat);
-    //     setMessages(newMessageList);
-    // }
+    const deleteLastMessage = (index: number) => {
+        if (!chatSelected || !chats) {
+            return;
+        }
 
-    // const sendText = async (newMessage) => {
-    //     const newMessageList = [...messages, newMessage];
-    //     const newChat = {
-    //         ...chatSelected,
-    //         messages: newMessageList
-    //     };
-    //     const updatedChats = chats.map((c) => {
-    //         if (c._id == chatSelected._id) {
-    //             return newChat;
-    //         }
-    //         return c;
-    //     });
-    //     setChats(updatedChats);
-    //     setChatSelected(newChat);
-    //     setMessages(newMessageList);
-    // }
+        const newMessageList = messages.filter((m) => m.ind != index);
+        const newChat = {
+            ...chatSelected,
+            messages: newMessageList
+        };
+        const updatedChats = chats.map((c) => {
+            if (c._id == chatSelected._id) {
+                return newChat;
+            }
+            return c;
+        });
+        setChats(updatedChats);
+        setChatSelected(newChat);
+        setMessages(newMessageList);
+    }
 
-    // const handle_edit_chat = async (chat) => {
-    //     if (!updateChatAvailable) {
-    //         return;
-    //     }
-    //     setUpdateChatAvailable(false);
-    //     const updatingChat = toast.loading("Editando Chat", {
-    //         position: "top-center",
-    //     })
+    const sendText = async (newMessage: MessageType) => {
+        if (!chatSelected || !chats) {
+            return;
+        }
 
-    //     try {
-    //         await update_chat_edit(chat._id, chat.title, chat.status);
-    //         const updatedChats = chats.map((c) => {
-    //             if (c._id == chat._id) {
-    //                 return { ...c, title: chat.title, status: chat.status };
-    //             }
-    //             return c;
-    //         });
-    //         setChats(updatedChats);
-    //         setChatToEdit(null);
-    //         handle_select_chat(chat);
-    //         toast.update(updatingChat, {
-    //             render: "Chat editado",
-    //             type: "success",
-    //             isLoading: false,
-    //             position: "top-center",
-    //             autoClose: 1950
-    //         });
-    //         await sleep(2.2);
-    //     } catch {
-    //         toast.update(updatingChat, {
-    //             render: "Error al editar el chat",
-    //             type: "error",
-    //             isLoading: false,
-    //             position: "top-center",
-    //             autoClose: 1950
-    //         })
-    //         await sleep(2.2);
-    //     } finally {
-    //         setUpdateChatAvailable(true);
-    //     }
-    // }
+        const newMessageList = [...messages, newMessage];
+        const newChat = {
+            ...chatSelected,
+            messages: newMessageList
+        };
+        const updatedChats = chats.map((c) => {
+            if (c._id == chatSelected._id) {
+                return newChat;
+            }
+            return c;
+        });
+        setChats(updatedChats);
+        setChatSelected(newChat);
+        setMessages(newMessageList);
+    }
 
-    // const handle_delete_chat = async (chat) => {
-    //     if (!deleteChatAvailable) {
-    //         return;
-    //     }
-    //     setDeleteChatAvailable(false);
-    //     const deletingChat = toast.loading("Eliminando Chat", {
-    //         position: "top-center",
-    //     })
+    const handleEditChat = async (chat: ChatType) => {
+        if (!updateChatAvailable || !chats) {
+            return;
+        }
+        setUpdateChatAvailable(false);
+        const updatingChat = toast.loading("Editando Chat", {
+            position: "top-center",
+        })
 
-    //     try {
-    //         await deleteChat(chat);
-    //         setShowChatTweaks(false);
-    //         setChatSelected(null);
-    //         setShowChatList(true);
-    //         toast.update(deletingChat, {
-    //             render: "Chat eliminado",
-    //             type: "success",
-    //             isLoading: false,
-    //             position: "top-center",
-    //             autoClose: 1950
-    //         });
-    //         await sleep(2.2);
-    //     } catch {
-    //         toast.update(deletingChat, {
-    //             render: "Error al eliminar el chat",
-    //             type: "error",
-    //             isLoading: false,
-    //             position: "top-center",
-    //             autoClose: 1950
-    //         })
-    //         await sleep(2.2);
-    //     } finally {
-    //         setDeleteChatAvailable(true);
-    //     }
-    // }
-
-    // const deleteChat = async (chat) => {
-    //     await delete_chat(chat._id);
-    //     const newChats = chats.filter((c) => c._id != chat._id);
-    //     setChats(newChats);
-    // }
+        try {
+            // await update_chat_edit(chat._id, chat.title, chat.status);
+            const updatedChats = chats.map((c) => {
+                if (c._id == chat._id) {
+                    return { ...c, title: chat.title, status: chat.status };
+                }
+                return c;
+            });
+            setChats(updatedChats);
+            setChatToEdit(null);
+            handleSelectChat(chat);
+            toast.update(updatingChat, {
+                render: "Chat editado",
+                type: "success",
+                isLoading: false,
+                position: "top-center",
+                autoClose: 1500
+            });
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+        } catch {
+            toast.update(updatingChat, {
+                render: "Error al editar el chat",
+                type: "error",
+                isLoading: false,
+                position: "top-center",
+                autoClose: 1500
+            })
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+        } finally {
+            setUpdateChatAvailable(true);
+        }
+    }
 
     const handleDeleteChat = async (chat: ChatType) => {
         if (!deleteChatAvailable) {
             return;
         }
         setDeleteChatAvailable(false);
+        const deletingChat = toast.loading("Eliminando Chat", {
+            position: "top-center",
+        })
+
+        try {
+            await deleteChat(chat);
+            setShowChatTweaks(false);
+            setChatSelected(null);
+            setShowChatList(true);
+            toast.update(deletingChat, {
+                render: "Chat eliminado",
+                type: "success",
+                isLoading: false,
+                position: "top-center",
+                autoClose: 1500
+            });
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+        } catch {
+            toast.update(deletingChat, {
+                render: "Error al eliminar el chat",
+                type: "error",
+                isLoading: false,
+                position: "top-center",
+                autoClose: 1500
+            })
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+        } finally {
+            setDeleteChatAvailable(true);
+        }
+    }
+
+    const deleteChat = async (chat: ChatType) => {
+        if (chats) {
+            // await delete_chat(chat._id);
+            const newChats = chats.filter((c) => c._id != chat._id);
+            setChats(newChats);
+        }
     }
 
     // Click Outside
@@ -321,9 +329,9 @@ export default function ChatPage() {
                             }
 
                             {/* Chat Edit State */}
-                            {/* {chatToEdit &&
-                                <ChatEdit chat={chatToEdit} setChatToEdit={setChatToEdit} handle_edit_chat={handle_edit_chat} />
-                            } */}
+                            {chatToEdit &&
+                                <ChatEdit chat={chatToEdit} setChatToEdit={setChatToEdit} handleEditChat={handleEditChat} />
+                            }
                         </div>
                     </>
                 }
