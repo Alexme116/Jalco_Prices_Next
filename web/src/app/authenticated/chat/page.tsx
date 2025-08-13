@@ -300,6 +300,7 @@ export default function ChatPage() {
                         >
                             <ChatList
                                 chats={chats}
+                                chatSelected={chatSelected}
                                 userType={user.rol}
                                 handleSelectChat={handleSelectChat}
                                 setShowChatList={setShowChatList}

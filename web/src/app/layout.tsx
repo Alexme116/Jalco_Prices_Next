@@ -30,6 +30,7 @@ export default function RootLayout({
       >
         {children}
         <ToastContainer />
+        <div id="portal-root"></div>
       </body>
     </html>
   );

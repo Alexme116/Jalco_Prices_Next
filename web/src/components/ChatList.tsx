@@ -6,16 +6,15 @@ import { ChatType } from '@/models/chatModels';
 import { CaretLeftIcon, DotsIcon, TrashIcon, EditIcon, ProgressSpinner } from "@/icons/Icons";
 
 export default function ChatList(
-    { chats, userType, handleSelectChat, setShowChatList, isDevice, setChatToEdit, handleDeleteChat, setShowCreateChat } :
-    { chats: ChatType[] | null, userType: string, handleSelectChat: (chat: ChatType) => void, setShowChatList: (show: boolean) => void, isDevice: string, setChatToEdit: (chat: ChatType) => void, handleDeleteChat: (chat: ChatType) => void, setShowCreateChat: (show: boolean) => void }
+    { chats, chatSelected, userType, handleSelectChat, setShowChatList, isDevice, setChatToEdit, handleDeleteChat, setShowCreateChat } :
+    { chats: ChatType[] | null, chatSelected: ChatType | null, userType: string, handleSelectChat: (chat: ChatType) => void, setShowChatList: (show: boolean) => void, isDevice: string, setChatToEdit: (chat: ChatType) => void, handleDeleteChat: (chat: ChatType) => void, setShowCreateChat: (show: boolean) => void }
 ) {
     const [chatHovered, setChatHovered] = useState<number | null>(null);
     const [chatTweaksSelected, setChatTweaksSelected] = useState<number | null>(null);
     const [showChatTweaks, setShowChatTweaks] = useState<boolean>(false);
     const tweaksRef = useRef<HTMLDivElement | null>(null);
-    const tweaksRoot = document.getElementById("portal-root");
+    const tweaksRoot = typeof document !== "undefined" ? document.getElementById("portal-root") : null;
     const [tweaksPosition, setTweaksPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
-
 
     const handle_edit_chat = (e: React.MouseEvent, chat: ChatType) => {
         e.stopPropagation();
@@ -42,9 +41,9 @@ export default function ChatList(
             }
         };
         
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside, true);
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside, true);
         };
     }, []);
 
@@ -79,7 +78,7 @@ export default function ChatList(
                 )}
 
                 {chats && chats.length == 0 && (
-                    <div className="flex items-center justify-center h-full">
+                    <div className="w-52 flex items-center justify-center h-full">
                         <p className="text-sm text-gray-500">Crea un nuevo chat</p>
                     </div>
                 )}
@@ -89,7 +88,11 @@ export default function ChatList(
                         key={index}
                         className={`
                             relative w-52 flex justify-between items-center p-3 rounded-lg gap-2 hover:cursor-pointer
-                            ${chat.status == "normal" ? "bg-transparent xl:hover:bg-white max-xl:bg-[#ededed]" : "bg-[#ffe6b7]"}
+                            ${chat.status == "normal" ?
+                                chat.title == chatSelected?.title ? "bg-[#00000021]" : "bg-transparent xl:hover:bg-white max-xl:bg-[#ededed]"
+                                :
+                                chat.title == chatSelected?.title ? "bg-[#eece91]" : "bg-[#ffe6b7]"
+                            }
                         `}
                         onClick={() => {
                             handleSelectChat(chat);
@@ -122,8 +125,9 @@ export default function ChatList(
                             ReactDOM.createPortal(
                                 <div
                                     ref={tweaksRef}
-                                    className="absolute z-50 flex flex-col gap-2 bg-white p-2 rounded-lg shadow-lg"
+                                    className="z-50 flex flex-col gap-2 bg-white p-2 rounded-lg shadow-lg"
                                     style={{
+                                        position: "fixed",
                                         top: tweaksPosition.top,
                                         left: tweaksPosition.left
                                     }}

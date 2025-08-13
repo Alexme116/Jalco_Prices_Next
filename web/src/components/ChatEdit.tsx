@@ -24,7 +24,10 @@ export default function ChatEdit(
     return (
         <div className="relative h-full w-full p-3">
             {/* Return button */}
-            <button onClick={() => setChatToEdit(null)} className="absolute top-5 left-5">
+            <button
+                className="absolute top-5 left-5 hover:cursor-pointer"
+                onClick={() => setChatToEdit(null)}
+            >
                 <ArrowReturnIcon color="#77797a" w={"24px"} h={"24px"} />
             </button>
 
@@ -50,7 +53,7 @@ export default function ChatEdit(
                     <div className="flex flex-col gap-2">
                         <h1 className="text-center font-bold text-xl">Color del fondo del chat</h1>
                         <div className="flex justify-center">
-                            <button className="bg-[#edbd63] px-5 pt-2 pb-3 rounded-lg"
+                            <button className="bg-[#edbd63] px-5 pt-2 pb-3 rounded-lg hover:cursor-pointer"
                                 onClick={() => {handleSetImportant(chat)}}
                             >
                                 <h1 className="text-white">
@@ -62,7 +65,7 @@ export default function ChatEdit(
 
                     {/* Update Button */}
                     <div className="flex justify-center">
-                        <button className="bg-black px-5 pt-2 pb-3 rounded-lg"
+                        <button className="bg-black px-5 pt-2 pb-3 rounded-lg hover:cursor-pointer"
                             onClick={() => {
                                 chat.title = title;
                                 handleEditChat(chat);
