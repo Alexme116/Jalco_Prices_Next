@@ -224,119 +224,121 @@ export default function ChatPage() {
     }, []);
 
     return (
-        <>
-            <div className="relative overflow-auto flex-1 flex bg-[#eff3f6]">
-                {/* Loading */}
-                {loading && !user && (
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                        <ProgressSpinner />
-                    </div>
-                )}
+        <section className="relative h-full w-full flex">
+            {/* Loading */}
+            {loading && !user && (
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <ProgressSpinner />
+                </div>
+            )}
 
-                {/* Error */}
-                {error && (
-                    <div className="w-full pt-5">
-                        <h1 className="text-center">Error: {error.message}</h1>
-                    </div>
-                    
-                )}
+            {/* Error */}
+            {error && (
+                <div className="w-full pt-5">
+                    <h1 className="text-center">Error: {error.message}</h1>
+                </div>
+                
+            )}
 
-                {/* Main Container */}
-                {!loading && !error && user &&
-                    <>
-                        {/* Show Chat List Button */}
-                        {isDevice != "Pc" && !showChatList && !chatToEdit &&
-                            <button
-                                className="absolute top-3 left-2 hover:cursor-pointer"
-                                onClick={() => setShowChatList(!showChatList)}
-                            >
-                                <CaretRightIcon color="#77797a" w={"24px"} h={"24px"} />
-                            </button>
-                        }
-
-                        {/* Dots Mobile Button */}
-                        {isDevice != "Pc" && !chatToEdit && chatSelected &&
-                            <button
-                                className="absolute top-3 right-5 hover:cursor-pointer"
-                                onClick={() => setShowChatTweaks(true)}
-                            >
-                                <DotsIcon color="#77797a" w={"24px"} h={"24px"} />
-                            </button>
-                        }
-
-                        {/* Chat Tweaks Menu */}
-                        {isDevice != "Pc" && showChatTweaks && chatSelected &&
-                            <div
-                                ref={tweaksRef}
-                                className="absolute top-12 right-0 flex flex-col gap-4 p-3 bg-white rounded-bl-lg shadow-lg"
-                            >
-                                {/* Edit Chat BG Button */}
-                                <button
-                                    className="flex items-center gap-3 text-[#77797a] hover:cursor-pointer"
-                                    onClick={() => {setChatToEdit(chatSelected); setShowChatTweaks(false)}}
-                                >
-                                    <EditIcon color="#77797a" w={"18px"} h={"18px"} />
-                                    <h1>Editar</h1>
-                                </button>
-
-                                {/* Delete Chat Button */}
-                                {user.rol == "admin" &&
-                                    <button
-                                        className="flex items-center gap-3 text-red-500 hover:cursor-pointer"
-                                        onClick={() => handleDeleteChat(chatSelected)}
-                                    >
-                                        <TrashIcon color="#ef4444" w={"18px"} h={"18px"} />
-                                        <h1>Eliminar</h1>
-                                    </button>
-                                }
-                            </div>
-                        }
-
-                        {/* Left Section */}
-                        {((showChatList && isDevice != "Pc") || isDevice == "Pc") &&
-                            <div
-                                className="
-                                    h-full p-3
-                                    max-xl:absolute max-xl:bg-white"
-                            >
-                                <ChatList
-                                    chats={chats}
-                                    userType={user.rol}
-                                    handleSelectChat={handleSelectChat}
-                                    setShowChatList={setShowChatList}
-                                    isDevice={isDevice}
-                                    setChatToEdit={setChatToEdit}
-                                    handleDeleteChat={handleDeleteChat}
-                                    setShowCreateChat={setShowCreateChat}
-                                />
-                            </div>
-                        }
-
-                        {/* Right Section */}
-                        <div
-                            className="
-                                flex-1 overflow-hidden m-5 ml-0 rounded-3xl bg-white shadow-[#8b8b8b71] shadow-[0px_0px_10px_3px]
-                                max-xl:m-0 max-xl:rounded-none max-xl:bg-[#eff3f6]"
+            {/* Main Container */}
+            {!loading && !error && user &&
+                <>
+                    {/* Show Chat List Button */}
+                    {isDevice != "Pc" && !showChatList && !chatToEdit &&
+                        <button
+                            className="absolute top-3 left-2 hover:cursor-pointer"
+                            onClick={() => setShowChatList(!showChatList)}
                         >
-                            {/* Chat Selected State */}
-                            {!chatToEdit &&
-                                <ChatDashboard
-                                    userType={user.rol}
-                                    messages={messages}
-                                    chatSelected={chatSelected}
-                                    handleSendText={handleSendText}
-                                />
-                            }
+                            <CaretRightIcon color="#77797a" w={"24px"} h={"24px"} />
+                        </button>
+                    }
 
-                            {/* Chat Edit State */}
-                            {chatToEdit &&
-                                <ChatEdit chat={chatToEdit} setChatToEdit={setChatToEdit} handleEditChat={handleEditChat} />
+                    {/* Dots Mobile Button */}
+                    {isDevice != "Pc" && !chatToEdit && chatSelected &&
+                        <button
+                            className="absolute top-3 right-5 hover:cursor-pointer"
+                            onClick={() => setShowChatTweaks(true)}
+                        >
+                            <DotsIcon color="#77797a" w={"24px"} h={"24px"} />
+                        </button>
+                    }
+
+                    {/* Chat Tweaks Menu */}
+                    {isDevice != "Pc" && showChatTweaks && chatSelected &&
+                        <div
+                            ref={tweaksRef}
+                            className="absolute top-12 right-0 flex flex-col gap-4 p-3 bg-white rounded-bl-lg shadow-lg"
+                        >
+                            {/* Edit Chat BG Button */}
+                            <button
+                                className="flex items-center gap-3 text-[#77797a] hover:cursor-pointer"
+                                onClick={() => {setChatToEdit(chatSelected); setShowChatTweaks(false)}}
+                            >
+                                <EditIcon color="#77797a" w={"18px"} h={"18px"} />
+                                <h1>Editar</h1>
+                            </button>
+
+                            {/* Delete Chat Button */}
+                            {user.rol == "admin" &&
+                                <button
+                                    className="flex items-center gap-3 text-red-500 hover:cursor-pointer"
+                                    onClick={() => handleDeleteChat(chatSelected)}
+                                >
+                                    <TrashIcon color="#ef4444" w={"18px"} h={"18px"} />
+                                    <h1>Eliminar</h1>
+                                </button>
                             }
                         </div>
-                    </>
-                }
-            </div>
+                    }
 
+                    {/* Left Section */}
+                    {((showChatList && isDevice != "Pc") || isDevice == "Pc") &&
+                        <div
+                            className="
+                                h-full p-3
+                                max-xl:absolute max-xl:bg-white"
+                        >
+                            <ChatList
+                                chats={chats}
+                                userType={user.rol}
+                                handleSelectChat={handleSelectChat}
+                                setShowChatList={setShowChatList}
+                                isDevice={isDevice}
+                                setChatToEdit={setChatToEdit}
+                                handleDeleteChat={handleDeleteChat}
+                                setShowCreateChat={setShowCreateChat}
+                            />
+                        </div>
+                    }
+
+                    {/* Right Section */}
+                    <div
+                        className="
+                            flex-1 overflow-hidden m-5 ml-0 rounded-3xl bg-white shadow-[#8b8b8b71] shadow-[0px_0px_10px_3px]
+                            max-xl:m-0 max-xl:rounded-none max-xl:bg-[#eff3f6]"
+                    >
+                        {/* Chat Selected State */}
+                        {!chatToEdit &&
+                            <ChatDashboard
+                                userType={user.rol}
+                                messages={messages}
+                                chatSelected={chatSelected}
+                                handleSendText={handleSendText}
+                            />
+                        }
+
+                        {/* Chat Edit State */}
+                        {chatToEdit &&
+                            <ChatEdit
+                                chat={chatToEdit}
+                                setChatToEdit={setChatToEdit}
+                                handleEditChat={handleEditChat}
+                            />
+                        }
+                    </div>
+                </>
+            }
+            
             {/* Create Chat Component */}
             {showCreateChat &&
                 <CreateChat
@@ -345,6 +347,6 @@ export default function ChatPage() {
                     setChats={setChats}
                 />
             }
-        </>
+        </section>
     )
 }

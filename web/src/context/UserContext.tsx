@@ -51,7 +51,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth > 1024) setIsDevice("Pc");
+            if (window.innerWidth >= 1280) setIsDevice("Pc");
             else if (window.innerWidth > 600) setIsDevice("Tablet");
             else setIsDevice("Mobile");
         };

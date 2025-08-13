@@ -69,7 +69,7 @@ export default function CreateChat(
 
     return (
         <div
-            className="z-10 absolute top-0 left-0 h-svh w-svw flex justify-center items-center bg-[#00000096] cursor-default"
+            className="z-10 absolute top-0 left-0 h-full w-full flex justify-center items-center bg-[#00000096] cursor-default"
             onClick={() => { setShowCreateChat(false) } }
         >
             {/* Create Chat Container */}
