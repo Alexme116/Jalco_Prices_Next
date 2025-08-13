@@ -62,7 +62,7 @@ export default function GridProductsKPI(
     }
 
     return (
-        <div className="flex flex-col gap-3">
+        <div className="mt-3 flex flex-col gap-3">
             {/* Title */}
             <h1 className="text-lg font-bold text-center max-md:text-xl">Productos Más Buscados</h1>
 

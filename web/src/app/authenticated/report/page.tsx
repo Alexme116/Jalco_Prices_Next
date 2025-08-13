@@ -19,8 +19,8 @@ export default function ReportPage() {
     // Fetch Products
     useEffect(() => {
         const fetchProducts = async () => {
-            setLoading(true)
             try {
+                setLoading(true)
                 const data = await getAllProductsReportController()
                 setProducts(data)
             } catch (error) {
@@ -43,20 +43,20 @@ export default function ReportPage() {
     }, [user, router])
 
     return (
-        <div className="overflow-auto flex-1 p-5 bg-[#eff3f6]">
+        <div className="p-5">
+            {/* Title */}
+            <h1 className="text-2xl font-bold text-center max-md:text-xl">{"Reporte KPI's"}</h1>
+
             {/* Loading */}
-            {loading || !user && (
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            {loading && (
+                <div className="mt-3 flex justify-center">
                     <ProgressSpinner />
                 </div>
             )}
 
             {/* Error */}
             {error && (
-                <div className="w-full pt-5">
-                    <h1 className="text-center">Error: {error}</h1>
-                </div>
-                
+                <h1 className="text-center">Error: {error}</h1>
             )}
 
             {/* No Products */}
@@ -68,15 +68,12 @@ export default function ReportPage() {
 
             {/* Report KPI's */}
             {!loading && !error && products && products.length > 0 && (
-            <div className="flex flex-col gap-5">
-                {/* Title */}
-                <h1 className="text-2xl font-bold text-center max-md:text-xl">{"Reporte KPI's"}</h1>
-
-                {/* Grid Products Ranked */}
-                <GridProductsKPI
-                    products={products}
-                />
-            </div>
+                <div className="flex flex-col gap-5">
+                    {/* Grid Products Ranked */}
+                    <GridProductsKPI
+                        products={products}
+                    />
+                </div>
             )}
         </div>
     )
