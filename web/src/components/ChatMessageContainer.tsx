@@ -4,7 +4,7 @@ import { MessageType } from "@/models/chatModels";
 
 export default function ChatMessageContainer(
     { messages, userType } :
-    { messages: MessageType[]; userType: string; }
+    { messages: MessageType[]; userType: "user" | "admin" | undefined; }
 ) {
     return (
         <>

@@ -53,7 +53,7 @@ export default function CreateChat(
 
         let ind = 1
         if (chats.length != 0) {
-            ind = chats[chats.length - 1].ind + 1
+            ind = chats[0].ind + 1
         }
         
         const newChat = {
@@ -63,8 +63,8 @@ export default function CreateChat(
             status: "normal" as "normal" | "important",
         }
         
-        await createNewChatController(newChat);
-        setChats([newChat, ...chats]);
+        const chatCreated = await createNewChatController(newChat);
+        setChats([chatCreated, ...chats]);
     }
 
     return (

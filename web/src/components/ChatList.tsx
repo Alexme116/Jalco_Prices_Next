@@ -7,7 +7,11 @@ import { CaretLeftIcon, DotsIcon, TrashIcon, EditIcon, ProgressSpinner } from "@
 
 export default function ChatList(
     { chats, chatSelected, userType, handleSelectChat, setShowChatList, isDevice, setChatToEdit, handleDeleteChat, setShowCreateChat } :
-    { chats: ChatType[] | null, chatSelected: ChatType | null, userType: string, handleSelectChat: (chat: ChatType) => void, setShowChatList: (show: boolean) => void, isDevice: string, setChatToEdit: (chat: ChatType) => void, handleDeleteChat: (chat: ChatType) => void, setShowCreateChat: (show: boolean) => void }
+    {
+        chats: ChatType[] | null, chatSelected: ChatType | null, userType: "user" | "admin" | undefined, handleSelectChat: (chat: ChatType) => void,
+        setShowChatList: (show: boolean) => void, isDevice: string, setChatToEdit: (chat: ChatType) => void, handleDeleteChat: (chat: ChatType) => void,
+        setShowCreateChat: (show: boolean) => void
+    }
 ) {
     const [chatHovered, setChatHovered] = useState<number | null>(null);
     const [chatTweaksSelected, setChatTweaksSelected] = useState<number | null>(null);
@@ -70,93 +74,95 @@ export default function ChatList(
             </div>
 
             {/* Chats List */}
-            <div className="overflow-auto flex-1 flex flex-col gap-2 mt-5">
-                {!chats && (
+            <div className="overflow-auto flex-1 w-52 flex flex-col gap-2 mt-5">
+                {(!chats || userType == undefined) && (
                     <div className="flex justify-center">
                         <ProgressSpinner />
                     </div>
                 )}
 
-                {chats && chats.length == 0 && (
-                    <div className="w-52 flex items-center justify-center h-full">
+                {chats && chats.length == 0 && userType != undefined && (
+                    <div className="flex items-center justify-center h-full">
                         <p className="text-sm text-gray-500">Crea un nuevo chat</p>
                     </div>
                 )}
 
-                {chats && chats.length > 0 && chats.map((chat, index) => (
-                    <div
-                        key={index}
-                        className={`
-                            relative w-52 flex justify-between items-center p-3 rounded-lg gap-2 hover:cursor-pointer
-                            ${chat.status == "normal" ?
-                                chat.title == chatSelected?.title ? "bg-[#00000021]" : "bg-transparent hover:bg-[#00000021]"
-                                :
-                                chat.title == chatSelected?.title ? "bg-[#eece91]" : "bg-[#ffe6b7] hover:bg-[#eece91]"
-                            }
-                        `}
-                        onClick={() => {
-                            handleSelectChat(chat);
-                            setShowChatList(false)
-                        }}
-                        onMouseEnter={() => setChatHovered(index)}
-                        onMouseLeave={() => setChatHovered(null)}
-                    >
-                        {/* Chat Title */}
-                        <h1 className='w-full text-start max-lg:text-sm truncate'>{chat.title}</h1>
+                {chats && chats.length > 0 && userType != undefined && 
+                    chats.map((chat, index) => (
+                        <div
+                            key={index}
+                            className={`
+                                relative flex justify-between items-center p-3 rounded-lg gap-2 hover:cursor-pointer
+                                ${chat.status == "normal" ?
+                                    chat.title == chatSelected?.title ? "bg-[#00000020]" : "bg-transparent hover:bg-[#00000010]"
+                                    :
+                                    chat.title == chatSelected?.title ? "bg-[#eece91]" : "bg-[#ffe6b7] hover:bg-[#eece91]"
+                                }
+                            `}
+                            onClick={() => {
+                                handleSelectChat(chat);
+                                setShowChatList(false)
+                            }}
+                            onMouseEnter={() => setChatHovered(index)}
+                            onMouseLeave={() => setChatHovered(null)}
+                        >
+                            {/* Chat Title */}
+                            <h1 className='w-full text-start max-lg:text-sm truncate'>{chat.title}</h1>
 
-                        {/* Dots Button */}
-                        {((chatHovered === index || (showChatTweaks && chatTweaksSelected === index)) && isDevice == "Pc") &&
-                            <button
-                                className='hover:cursor-pointer'
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    const rect = e.currentTarget.getBoundingClientRect();
-                                    setTweaksPosition({ top: rect.bottom - 5, left: rect.right });
-                                    setChatTweaksSelected(index);
-                                    setShowChatTweaks(true);
-                                }}
-                            >
-                                <DotsIcon color="#77797a" w={"24px"} h={"24px"} />
-                            </button>
-                        }
-
-                        {/* Chat Tweaks */}
-                        {showChatTweaks && chatTweaksSelected == index && tweaksRoot &&
-                            ReactDOM.createPortal(
-                                <div
-                                    ref={tweaksRef}
-                                    className="z-50 flex flex-col gap-2 bg-white p-2 rounded-lg shadow-lg"
-                                    style={{
-                                        position: "fixed",
-                                        top: tweaksPosition.top,
-                                        left: tweaksPosition.left
+                            {/* Dots Button */}
+                            {((chatHovered === index || (showChatTweaks && chatTweaksSelected === index)) && isDevice == "Pc") &&
+                                <button
+                                    className='hover:cursor-pointer'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        const rect = e.currentTarget.getBoundingClientRect();
+                                        setTweaksPosition({ top: rect.bottom - 5, left: rect.right });
+                                        setChatTweaksSelected(index);
+                                        setShowChatTweaks(true);
                                     }}
                                 >
-                                    {/* Edit Chat Button */}
-                                    <button
-                                        className="flex items-center gap-3 text-[#77797a] hover:cursor-pointer"
-                                        onClick={(e) => handle_edit_chat(e, chat)}
-                                    >
-                                        <EditIcon color="#77797a" w={"18px"} h={"18px"} />
-                                        <h1>Editar</h1>
-                                    </button>
+                                    <DotsIcon color="#77797a" w={"24px"} h={"24px"} />
+                                </button>
+                            }
 
-                                    {/* Delete Chat Button */}
-                                    {userType == "admin" &&
+                            {/* Chat Tweaks */}
+                            {showChatTweaks && chatTweaksSelected == index && tweaksRoot &&
+                                ReactDOM.createPortal(
+                                    <div
+                                        ref={tweaksRef}
+                                        className="z-50 flex flex-col gap-2 bg-white p-2 rounded-lg shadow-lg"
+                                        style={{
+                                            position: "fixed",
+                                            top: tweaksPosition.top,
+                                            left: tweaksPosition.left
+                                        }}
+                                    >
+                                        {/* Edit Chat Button */}
                                         <button
-                                            className="flex items-center gap-3 text-red-500 hover:cursor-pointer"
-                                            onClick={(e) => handle_delete_chat_chatlist(e, chat)}
+                                            className="flex items-center gap-3 text-[#77797a] hover:cursor-pointer"
+                                            onClick={(e) => handle_edit_chat(e, chat)}
                                         >
-                                            <TrashIcon color="#ef4444" w={"18px"} h={"18px"} />
-                                            <h1>Eliminar</h1>
+                                            <EditIcon color="#77797a" w={"18px"} h={"18px"} />
+                                            <h1>Editar</h1>
                                         </button>
-                                    }
-                                </div>,
-                                tweaksRoot
-                            )
-                        }
-                    </div>
-                ))}
+
+                                        {/* Delete Chat Button */}
+                                        {userType == "admin" &&
+                                            <button
+                                                className="flex items-center gap-3 text-red-500 hover:cursor-pointer"
+                                                onClick={(e) => handle_delete_chat_chatlist(e, chat)}
+                                            >
+                                                <TrashIcon color="#ef4444" w={"18px"} h={"18px"} />
+                                                <h1>Eliminar</h1>
+                                            </button>
+                                        }
+                                    </div>,
+                                    tweaksRoot
+                                )
+                            }
+                        </div>
+                    )
+                )}
             </div>
         </div>
     )

@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useUser } from "@/context/UserContext";
-import { getAllChatsController } from "@/controllers/chatController";
+import { getAllChatsController, addMessageToChatController, updateChatTitleAndStatusController, deleteChatByIdController } from "@/controllers/chatController";
 import { MessageType, ChatType } from "@/models/chatModels";
-import { ProgressSpinner, CaretRightIcon, DotsIcon, EditIcon, TrashIcon } from "@/icons/Icons";
+import { CaretRightIcon, DotsIcon, EditIcon, TrashIcon } from "@/icons/Icons";
 import ChatList from "@/components/ChatList";
 import ChatDashboard from "@/components/ChatDashboard";
 import ChatEdit from "@/components/ChatEdit";
@@ -13,7 +13,6 @@ import CreateChat from "@/components/CreateChat";
 
 export default function ChatPage() {
     const { user, isDevice } = useUser();
-    const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
     const [chats, setChats] = useState<ChatType[] | null>(null);
     const [messages, setMessages] = useState<MessageType[]>([]);
@@ -35,6 +34,13 @@ export default function ChatPage() {
         if (!user) {
             return;
         }
+        if (!chatSelected || !chatSelected._id) {
+            toast.error("Debes seleccionar un chat para enviar un mensaje", {
+                position: "top-center",
+                autoClose: 1500
+            });
+            return;
+        }
 
         const newMessage: MessageType = {
             ind: messages.length + 1,
@@ -45,7 +51,7 @@ export default function ChatPage() {
 
         try {
             sendText(newMessage);
-            // await add_message_to_chat(chatSelected._id, newMessage);
+            await addMessageToChatController(chatSelected._id, newMessage);
         } catch {
             toast.error("Error al enviar el mensaje", {
                 position: "top-center",
@@ -107,7 +113,10 @@ export default function ChatPage() {
         })
 
         try {
-            // await update_chat_edit(chat._id, chat.title, chat.status);
+            if (!chat._id || !chat.status) {
+                throw new Error("Chat ID and Status is required for updating");
+            }
+            await updateChatTitleAndStatusController(chat._id, chat.title, chat.status);
             const updatedChats = chats.map((c) => {
                 if (c._id == chat._id) {
                     return { ...c, title: chat.title, status: chat.status };
@@ -177,7 +186,11 @@ export default function ChatPage() {
 
     const deleteChat = async (chat: ChatType) => {
         if (chats) {
-            // await delete_chat(chat._id);
+            if (chat._id) {
+                await deleteChatByIdController(chat._id);
+            } else {
+                throw new Error("Chat ID is required for deletion");
+            }
             const newChats = chats.filter((c) => c._id != chat._id);
             setChats(newChats);
         }
@@ -209,14 +222,12 @@ export default function ChatPage() {
     // Fetch Chats
     useEffect(() => {
         const fetchChats = async () => {
-            setLoading(true);
             try {
                 const response = await getAllChatsController()
+                response.sort((a, b) => b.ind - a.ind);
                 setChats(response);
             } catch (error) {
                 setError(error instanceof Error ? error : new Error("Unknown error"));
-            } finally {
-                setLoading(false);
             }
         };
         
@@ -225,23 +236,16 @@ export default function ChatPage() {
 
     return (
         <section className="relative h-full w-full flex">
-            {/* Loading */}
-            {loading && !user && (
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <ProgressSpinner />
-                </div>
-            )}
-
             {/* Error */}
             {error && (
-                <div className="w-full pt-5">
+                <div className="w-full p-5">
                     <h1 className="text-center">Error: {error.message}</h1>
                 </div>
                 
             )}
 
             {/* Main Container */}
-            {!loading && !error && user &&
+            {!error &&
                 <>
                     {/* Show Chat List Button */}
                     {isDevice != "Pc" && !showChatList && !chatToEdit &&
@@ -264,7 +268,7 @@ export default function ChatPage() {
                     }
 
                     {/* Chat Tweaks Menu */}
-                    {isDevice != "Pc" && showChatTweaks && chatSelected &&
+                    {isDevice != "Pc" && showChatTweaks && chatSelected && user &&
                         <div
                             ref={tweaksRef}
                             className="absolute top-12 right-0 flex flex-col gap-4 p-3 bg-white rounded-bl-lg shadow-lg"
@@ -301,7 +305,7 @@ export default function ChatPage() {
                             <ChatList
                                 chats={chats}
                                 chatSelected={chatSelected}
-                                userType={user.rol}
+                                userType={user?.rol}
                                 handleSelectChat={handleSelectChat}
                                 setShowChatList={setShowChatList}
                                 isDevice={isDevice}
@@ -321,7 +325,7 @@ export default function ChatPage() {
                         {/* Chat Selected State */}
                         {!chatToEdit &&
                             <ChatDashboard
-                                userType={user.rol}
+                                userType={user?.rol}
                                 messages={messages}
                                 chatSelected={chatSelected}
                                 handleSendText={handleSendText}
@@ -337,16 +341,16 @@ export default function ChatPage() {
                             />
                         }
                     </div>
+                    
+                    {/* Create Chat Component */}
+                    {showCreateChat &&
+                        <CreateChat
+                            setShowCreateChat={setShowCreateChat}
+                            chats={chats}
+                            setChats={setChats}
+                        />
+                    }
                 </>
-            }
-            
-            {/* Create Chat Component */}
-            {showCreateChat &&
-                <CreateChat
-                    setShowCreateChat={setShowCreateChat}
-                    chats={chats}
-                    setChats={setChats}
-                />
             }
         </section>
     )

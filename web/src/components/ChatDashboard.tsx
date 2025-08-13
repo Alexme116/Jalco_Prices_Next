@@ -6,7 +6,7 @@ import ChatMessageContainer from "./ChatMessageContainer";
 
 export default function ChatDashboard(
     { userType, messages, chatSelected, handleSendText } :
-    { userType: string; messages: MessageType[]; chatSelected: ChatType | null; handleSendText: (text: string) => Promise<void>; }
+    { userType: "user" | "admin" | undefined; messages: MessageType[]; chatSelected: ChatType | null; handleSendText: (text: string) => Promise<void>; }
 ) {
     const [textInput, setTextInput] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -52,7 +52,7 @@ export default function ChatDashboard(
             {/* Chat NOT Selected State */}
             {!chatSelected &&
                 <div className="h-full flex justify-center items-center">
-                    <h1 className="text-center text-gray-500">Selecciona o crea un Nuevo Chat</h1>
+                    <h1 className="text-center text-gray-500">Selecciona un chat</h1>
                 </div>
             }
 
@@ -74,7 +74,10 @@ export default function ChatDashboard(
                     {/* Message Container */}
                     <div className="overflow-auto flex-1 flex flex-col gap-3 p-3">
                         {messages.length > 0 &&
-                            <ChatMessageContainer messages={messages} userType={userType} />
+                            <ChatMessageContainer
+                                messages={messages}
+                                userType={userType}
+                            />
                         }
                         <div ref={bottomChatRef} />
                     </div>
