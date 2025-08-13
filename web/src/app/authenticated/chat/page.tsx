@@ -49,18 +49,18 @@ export default function ChatPage() {
         } catch {
             toast.error("Error al enviar el mensaje", {
                 position: "top-center",
-                autoClose: 1950
+                autoClose: 1500
             });
             deleteLastMessage(newMessage.ind);
         }
     }
 
-    const deleteLastMessage = (index: number) => {
+    const sendText = async (newMessage: MessageType) => {
         if (!chatSelected || !chats) {
             return;
         }
 
-        const newMessageList = messages.filter((m) => m.ind != index);
+        const newMessageList = [...messages, newMessage];
         const newChat = {
             ...chatSelected,
             messages: newMessageList
@@ -76,12 +76,12 @@ export default function ChatPage() {
         setMessages(newMessageList);
     }
 
-    const sendText = async (newMessage: MessageType) => {
+    const deleteLastMessage = (index: number) => {
         if (!chatSelected || !chats) {
             return;
         }
 
-        const newMessageList = [...messages, newMessage];
+        const newMessageList = messages.filter((m) => m.ind != index);
         const newChat = {
             ...chatSelected,
             messages: newMessageList

@@ -9,7 +9,10 @@ export default function ChatMessageContainer(
     return (
         <>
             {messages.map((message) => (
-                <div key={message._id} className={`flex ${message.rol == userType ? "justify-end" : ""}`}>
+                <div
+                    key={message.ind}
+                    className={`flex ${message.rol == userType ? "justify-end" : ""}`}
+                >
                     <div className={"flex flex-col max-w-[45%]"}>
                         {/* Message Header */}
                         <div

@@ -89,9 +89,9 @@ export default function ChatList(
                         className={`
                             relative w-52 flex justify-between items-center p-3 rounded-lg gap-2 hover:cursor-pointer
                             ${chat.status == "normal" ?
-                                chat.title == chatSelected?.title ? "bg-[#00000021]" : "bg-transparent xl:hover:bg-white max-xl:bg-[#ededed]"
+                                chat.title == chatSelected?.title ? "bg-[#00000021]" : "bg-transparent hover:bg-[#00000021]"
                                 :
-                                chat.title == chatSelected?.title ? "bg-[#eece91]" : "bg-[#ffe6b7]"
+                                chat.title == chatSelected?.title ? "bg-[#eece91]" : "bg-[#ffe6b7] hover:bg-[#eece91]"
                             }
                         `}
                         onClick={() => {
