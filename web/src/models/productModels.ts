@@ -68,6 +68,7 @@ export type ProductUserDetailsType = {
 export type ProductAccessoryDetailsType = {
     _id: string;
     nombre: string;
+    categoria: string;
     precioMayoreo: number;
     imagen: string;
 }

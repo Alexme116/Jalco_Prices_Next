@@ -87,7 +87,7 @@ router.get('/user/:id', async (req, res) => {
 router.get('/generic/:name', async (req, res) => {
     try {
         const products = await Product.find({ nombreGenerico: req.params.name })
-            .select('_id nombre precioMayoreo imagen');
+            .select('_id nombre categoria precioMayoreo imagen');
         
         res.json({
             total: products.length,

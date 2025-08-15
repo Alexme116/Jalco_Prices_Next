@@ -377,7 +377,7 @@ export default function ProductDetails(
                         </div>
 
                         {/* Same Generic Names Products */}
-                        <SameProducts nombreGenerico={productData.nombreGenerico} id={id} accessory={accessory} setAccessory={setAccessory} />
+                        <SameProducts nombreGenerico={productData.nombreGenerico} id={id} accessory={accessory} setAccessory={setAccessory} categoria={productData.categoria} />
 
                         {/* Delete Button */}
                         {user?.rol == "admin" &&

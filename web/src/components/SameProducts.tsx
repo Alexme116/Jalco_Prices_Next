@@ -11,8 +11,8 @@ import { CaretUpIcon, CaretDownIcon, CheckIcon } from "@/icons/Icons"
 import ImageNotFound from "@/assets/Images/ImageNotFound.png";
 
 export default function SameProducts(
-    { nombreGenerico, id, accessory, setAccessory } :
-    { nombreGenerico: string, id: string, accessory: ProductAccessoryDetailsType | null, setAccessory: (accessory: ProductAccessoryDetailsType | null) => void }
+    { nombreGenerico, id, accessory, setAccessory, categoria } :
+    { nombreGenerico: string, id: string, accessory: ProductAccessoryDetailsType | null, setAccessory: (accessory: ProductAccessoryDetailsType | null) => void, categoria: string }
 ) {
     const [showSimilarProducts, setShowSimilarProducts] = useState<boolean>(false)
     const [similarProducts, setSimilarProducts] = useState<ProductAccessoryDetailsType[] | null>(null)
@@ -51,7 +51,9 @@ export default function SameProducts(
                 className="flex items-center gap-2 hover:cursor-pointer"
                 onClick={() => setShowSimilarProducts(!showSimilarProducts)}
             >
-                <h1 className=" font-bold pb-1">Productos Similares</h1>
+                <h1 className=" font-bold pb-1">
+                    {categoria.toLowerCase() == "accesorio" ? "Productos Compatibles" : "Accesorios"}
+                </h1>
                 <div>
                     {!showSimilarProducts ?
                         <CaretUpIcon color="black" h={"23"} w={"23"} />
@@ -76,7 +78,10 @@ export default function SameProducts(
                     >
                         {similarProducts
                             .filter((product) => {
-                                return product._id !== id
+                                if (categoria.toLowerCase() == "accesorio") {
+                                    return product._id != id && product.categoria.toLowerCase() != "accesorio"
+                                }
+                                return product._id != id && product.categoria.toLowerCase() == "accesorio"
                             })
                             .map((product) => (
                                 <div
