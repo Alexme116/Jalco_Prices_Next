@@ -44,8 +44,15 @@ export default function SameProducts(
         fetchSimilarProducts()
     }, [])
 
+    const filteredProducts = similarProducts?.filter((product) => {
+        if (categoria.toLowerCase() == "accesorio") {
+            return product._id != id && product.categoria.toLowerCase() != "accesorio"
+        }
+        return product._id != id && product.categoria.toLowerCase() == "accesorio"
+    })
+
     return (
-        <div className="w-full flex flex-col items-center gap-5">
+        <div className={`w-full flex flex-col items-center gap-5 ${filteredProducts && filteredProducts.length > 0 ? "" : "hidden"}`}>
             {/* Title Section */}
             <button
                 className="flex items-center gap-2 hover:cursor-pointer"
@@ -65,25 +72,18 @@ export default function SameProducts(
             </button>
 
             {/* Products Section */}
-            {showSimilarProducts && similarProducts && similarProducts.length > 0 &&
+            {showSimilarProducts && filteredProducts && filteredProducts.length > 0 &&
                 <div className="w-full flex justify-center pb-3">
                     <div
                         className={`
                             grid mx-auto gap-4
-                            ${similarProducts.length == 3 ? "grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1" :
-                                similarProducts.length == 2 ? "grid-cols-2 max-md:grid-cols-1" :
-                                similarProducts.length == 1 ? "grid-cols-1" :
+                            ${filteredProducts.length == 3 ? "grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1" :
+                                filteredProducts.length == 2 ? "grid-cols-2 max-md:grid-cols-1" :
+                                filteredProducts.length == 1 ? "grid-cols-1" :
                             "grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1"}
                         `}
                     >
-                        {similarProducts
-                            .filter((product) => {
-                                if (categoria.toLowerCase() == "accesorio") {
-                                    return product._id != id && product.categoria.toLowerCase() != "accesorio"
-                                }
-                                return product._id != id && product.categoria.toLowerCase() == "accesorio"
-                            })
-                            .map((product) => (
+                        {filteredProducts.map((product) => (
                                 <div
                                     key={product._id}
                                     className="w-72 max-md:w-60 flex flex-col border rounded-lg shadow-lg bg-white border-[#0000001f] shadow-[#0000003b]"
