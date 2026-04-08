@@ -40,7 +40,7 @@ export default function Login() {
         handle_login_incorrect(toastVar);
       }
 
-      if (userData && userData.status == "disabled") {
+      if (userData?.status == "disabled") {
         toast.update(toastVar, {
           render: "Cuenta deshabilitada",
           type: "error",
@@ -60,7 +60,7 @@ export default function Login() {
       setEmail("");
       setPassword("");
       await afterToast(1500);
-      window.location.href = "/authenticated";
+      globalThis.location.href = "/authenticated";
     }
 
     const handle_login_incorrect = async (toastVar: Id) => {
